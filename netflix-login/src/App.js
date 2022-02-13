@@ -1,6 +1,29 @@
 import './App.css';
 
 function App() {
+
+
+  return (
+      <div>
+         Initial web app, 13/02/2022, 19:26.
+      </div>
+    );
+}
+
+export default App;
+
+/*
+     <>
+
+        <fb:login-button
+          scope="public_profile,email"
+          onlogin="checkLoginState();">
+        </fb:login-button>
+     </>
+
+ */
+
+/*
     window.fbAsyncInit = function() {
         FB.init({
           appId      : '{your-app-id}',
@@ -24,19 +47,9 @@ function App() {
     FB.getLoginStatus(function(response) {
         statusChangeCallback(response);
     });
+ */
 
-  return (
-     <>
 
-        <fb:login-button
-          scope="public_profile,email"
-          onlogin="checkLoginState();">
-        </fb:login-button>
-     </>
-    );
-}
-
-export default App;
 
 /* Facebook SDK
 <script>
