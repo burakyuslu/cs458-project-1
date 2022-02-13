@@ -1,11 +1,76 @@
 import './App.css';
+import {Button, Checkbox, FormControlLabel, FormGroup, Grid, Paper, TextField} from "@mui/material";
+
+
 
 function App() {
 
 
   return (
       <div>
-         Initial web app, 13/02/2022, 19:26.
+         <Grid container spacing={2}>
+
+            <Grid item xs={5}>
+               <div style={{ paddingLeft: '10%', paddingTop: '3%'}}>
+                  N E T F L I X
+               </div>
+
+            </Grid>
+            <Grid style={{ paddingTop: '8%', marginBottom: '5%'}}  container xs={2}>
+               <Paper container variant="outlined" elevation={3}>
+                  <h2 style={{ paddingTop: '2%', paddingLeft: '5%'}} > Oturum Aç </h2>
+                  <TextField style={{ marginTop: '2%', marginLeft: '5%', minWidth:'90%'}} id="filled-basic" label="E-posta veya telefon numarası" variant="filled"/>
+                  <TextField style={{ marginTop: '2%', marginLeft: '5%', minWidth:'90%'}} id="filled-basic" label="Parola" variant="filled" />
+                  <Button style={{ marginTop: '2%', marginLeft: '5%', minWidth:'90%'}} variant="contained">Oturum Aç</Button>
+
+                  <FormGroup style = {{marginLeft: '5%', maxWidth: '50%'}}>
+                     <FormControlLabel control={<Checkbox defaultChecked />} label="Beni Hatırla" />
+                  </FormGroup>
+                  <p style = {{marginLeft: '5%'}}> <a style = {{marginLeft: '0%'}} href={''}> Yardım ister misiniz? </a> </p>
+                  <Button style = {{marginLeft: '5%'}} variant="text"> Facebook İle Oturum Aç </Button>
+                  <p style = {{marginLeft: '5%'}}> Netflix'e katılmak ister misiniz?  <a href={''}> Şimdi kaydolun. </a> </p>
+                  <p style = {{marginLeft: '5%'}}> Bu sayfa robot olmadığınızı kanıtlamak için Google reCAPTCHA tarafından korunuyor. </p>
+               </Paper>
+
+            </Grid>
+            <Grid item xs={5}>
+
+            </Grid>
+
+
+            <Grid  container xs={12}>
+               <Grid  item xs={3}/>
+
+
+               <Grid container xs={6}>
+                  <Grid item xs={12}>
+                     Sorularınız mı var? 0850-390-7444 numaralı telefonu arayın
+                  </Grid>
+
+                  <Grid item xs={3}>
+                     SSS <br/>
+                     Çerez Tercihleri <br/>
+                     Türkçe (tuş olarak değiştir)
+                  </Grid>
+                  <Grid item xs={3}>
+                     Yardım Merkezi <br/>
+                     Kurumsal Bilgiler
+                  </Grid>
+                  <Grid item xs={3}>
+                     Kullanım Koşulları
+                  </Grid>
+                  <Grid item xs={3}>
+                     Gizlilik
+                  </Grid>
+               </Grid>
+
+               <Grid item xs={3}/>
+
+            </Grid>
+
+         </Grid>
+
+
       </div>
     );
 }
