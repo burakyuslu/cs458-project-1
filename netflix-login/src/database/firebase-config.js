@@ -42,3 +42,4 @@ export const auth = getAuth(app);
 // });
 
 export default app;
+
