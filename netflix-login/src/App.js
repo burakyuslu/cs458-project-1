@@ -8,13 +8,49 @@ import {signInWithEmailAndPassword, signInWithPopup, signInWithPhoneNumber, Face
 
 function App(){
 
-   const[loginEmail, setLoginEmail] = useState("");
-   const[loginPassword, setLoginPassword] = useState("");
-   const[loginPhone, setLoginPhone] = useState("");
-   const[loginPhonePassword, setLoginPhonePassword] = useState();
+    const [loginEmail, setLoginEmail] = useState("");
+    const [loginPassword, setLoginPassword] = useState("");
+    const [loginPhone, setLoginPhone] = useState("");
+    const [emailError, setEmailError] = useState("")
+    const [passwordError, setPasswordError] = useState("")
 
+    const handleSubmit = () => {
+        var emailValid = false;
+        if(loginEmail.length === 0){
+            setEmailError("Email is required");
+        }
+        else if(loginEmail.length < 6){
+            setEmailError("Email should be minimum 6 characters");
+        }
+        else if(loginEmail.indexOf(' ') >= 0){
+            setEmailError('Email cannot contain spaces');
+        }
+        else{
+            setEmailError("")
+            emailValid = true
+        }
 
-   const login = async () => {
+        var passwordValid = false;
+        if(loginPassword.length === 0){
+            setPasswordError("Password is required");
+        }
+        else if(loginPassword.length < 6){
+            setPasswordError("Password should be minimum 6 characters");
+        }
+        else if(loginPassword.indexOf(' ') >= 0){
+            setPasswordError('Password cannot contain spaces');
+        }
+        else{
+            setPasswordError("")
+            passwordValid = true
+        }
+
+        if(emailValid && passwordValid){
+            loginWithEmailPassword(loginEmail, loginPassword)
+        }
+    }
+
+   const loginWithEmailPassword = async (loginEmail, loginPassword) => {
       try{
          const user = signInWithEmailAndPassword(
              auth,
@@ -38,109 +74,82 @@ function App(){
           })
     }
 
-    // const configureCaptcha = () => {
-    //    window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
-    //       'size': 'invisible',
-    //       'callback': (response) => {
-    //          // reCAPTCHA solved, allow signInWithPhoneNumber.
-    //          onSignInSubmit();
-    //          console.log("Recaptcha verified.")
-    //       },
-    //    });
-    // }
+    const pageTitle = "N E T F L I X";
+    const paperTitle = "Oturum Aç";
 
-    // const onSignInSubmit = (e) => {
-    //   e.preventDefault();
-    //   configureCaptcha();
-    //   const phoneNumber = "+90" + this.state.mob;
-    //   console.log(phoneNumber);
-    //   const appVerifier = window.recaptchaVerifier;
-    //
-    //   auth.signInWithPhoneNumber(phoneNumber, appVerifier)
-    //       .then((confirmationResult) => {
-    //          // SMS sent. Prompt user to type the code from the message, then sign the
-    //          // user in with confirmationResult.confirm(code).
-    //          window.confirmationResult = confirmationResult;
-    //          console.log("OTP has been sent");
-    //       }).catch((error) => {
-    //          console.log("SMS not sent");
-    //       });
-    //   }
-
-      return (
-      <div style={{ backgroundImage: `url(${background})` }} >
+    return (
+      <div style={{ backgroundImage: `url(${background})`, height: '100%', margin: 0}} >
          <Grid container spacing={2}>
-
-            <Grid item xs={5}>
+            <Grid item xs={4}>
                <div style={{ paddingLeft: '10%', paddingTop: '3%'}}>
-                  <p style = {{ color: 'red', fontSize:'42px', fontFamily:'-moz-initial', fontWeight:'bold'}}> N E T F L I X </p>
-
-                  {/*} TODO uncomment or remove
-                  <p style = {{ color:'white'}}>
-                     Developed By:
-                     <ul>
-                        <li>Can Kırşallıoba</li>
-                        <li>Burak Yiğit Uslu</li>
-                        <li>Elif Kurtay </li>
-                        <li>Pelin Çeliksöz</li>
-                     </ul>
-                  </p> */}
-
+                  <p style = {{ color: 'red', fontSize:'42px', fontFamily:'-moz-initial', fontWeight:'bold'}}>
+                    {pageTitle}
+                  </p>
                </div>
-
             </Grid>
-            <Grid style={{ paddingTop: '8%', marginBottom: '10%'}}  container xs={2}>
-               <Paper style = {{ backgroundColor: 'rgba(0, 0, 0, 0.8)'}} container variant="outlined" elevation={3}>
-                  <h2 style={{ color: "white", paddingTop: '2%', paddingLeft: '5%'}} > Oturum Aç </h2>
-                  {/*<TextField style={{ marginTop: '2%', marginLeft: '5%', minWidth:'90%', backgroundColor:'lightgray' }} id="filled-basic" label="E-posta veya telefon numarası" variant="filled" onChange={(event) => setLoginPhone(event.target.value)}/>*/}
-                  {/*<TextField style={{ marginTop: '2%', marginLeft: '5%', minWidth:'90%', backgroundColor:'lightgray'}} id="filled-basic" label="Parola" variant="filled" onChange={(event) => setLoginPhonePassword(event.target.value)}/>*/}
-                  {/*<Button  onClick={login} style={{ marginTop: '2%', marginLeft: '5%', minWidth:'90%', backgroundColor: "#ff0000 ",}} variant="contained">Oturum Aç</Button>*/}
-                  <TextField style={{ marginTop: '2%', marginLeft: '5%', minWidth:'90%', backgroundColor:'lightgray' }} id="filled-basic" label="E-posta veya telefon numarası" variant="filled" onChange={(event) => setLoginEmail(event.target.value)}/>
-                  <TextField style={{ marginTop: '2%', marginLeft: '5%', minWidth:'90%', backgroundColor:'lightgray'}} id="filled-basic" label="Parola" variant="filled" onChange={(event) => setLoginPassword(event.target.value)}/>
-                  <Button  onClick={login} style={{ marginTop: '2%', marginLeft: '5%', minWidth:'90%', backgroundColor: "#ff0000 ",}} variant="contained">Oturum Aç</Button>
-                  <FormGroup style = {{marginLeft: '5%', maxWidth: '50%', color:'white'}}>
-                     <FormControlLabel  control={<Checkbox style = {{ color: "#ff0000 "}} defaultChecked />} label="Beni Hatırla" />
+            <Grid style={{ paddingTop: '15%', marginBottom: '10%'}}  container xs={3}>
+               <Paper style={{paddingBottom: '10%', backgroundColor: 'rgba(0, 0, 0, 0.8)', minWidth: '400px'}}
+                    variant="outlined" elevation={3}>
+                  <h2 style={{color: "white", paddingTop: '2%', marginLeft: '13%'}} >{paperTitle}</h2>
+                  {}
+                  <TextField style={{ marginLeft: '13%', minWidth:'75%', backgroundColor:'white', borderRadius: 5 }}
+                    id="filled-basic"
+                    label="E-posta veya telefon numarası"
+                    variant="filled"
+                    onChange={(event) => setLoginEmail(event.target.value)}/>
+                  <TextField style={{ marginTop: '3%', marginLeft: '13%', minWidth:'75%',
+                        backgroundColor:'white', borderRadius: 5}}
+                    id="filled-basic"
+                    label="Parola"
+                    variant="filled"
+                    onChange={(event) => setLoginPassword(event.target.value)}/>
+                  <Button
+                    style={{ marginTop: '5%', marginLeft: '13%', minHeight:'12%', minWidth:'75%', backgroundColor: "#ff0000 "}}
+                    variant="contained"
+                    onClick={handleSubmit}>
+                    Oturum Aç
+                  </Button>
+                  <FormGroup style = {{marginLeft: '13%', maxWidth: '75%', color:'lightgray', fontSize: '8', flexDirection: 'row'}}>
+                     <FormControlLabel
+                        control={<Checkbox style = {{color: 'white'}} defaultChecked />}
+                        label={<span style={{ fontSize: '0.75rem' }}>{"Beni Hatırla"}</span>}
+                     />
+                     <a style={{marginTop: '4%', marginLeft: '25%', fontSize: '0.78rem',  color:'lightgray' }}>
+                        Yardım ister misiniz?</a>
                   </FormGroup>
-                  <p style = {{marginLeft: '5%', color:'white' }}> <a style = {{marginLeft: '0%'}} href={''}> Yardım ister misiniz? </a> </p>
-                  <Button onClick={signInWithFacebook} style = {{marginLeft: '5%',}} variant="text"> Facebook İle Oturum Aç </Button>
-                  <p style = {{marginLeft: '5%', color:'white'}}> Netflix'e katılmak ister misiniz?  <a href={''}> Şimdi kaydolun. </a> </p>
-                  <p style = {{marginLeft: '5%', color:'white'}}> Bu sayfa robot olmadığınızı kanıtlamak için Google reCAPTCHA tarafından korunuyor. </p>
+                  <Button style={{marginLeft: '12%'}}
+                    onClick={signInWithFacebook}
+                    variant="text">Facebook İle Oturum Aç</Button>
+                  <p style={{marginLeft: '13%',  color:'gray', fontSize: '0.9rem'}}>Netflix'e katılmak ister misiniz?
+                    <a style={{color:'white'}}> Şimdi kaydolun. </a> </p>
+                  <p style={{marginLeft: '13%', maxWidth:'75%', color:'gray', fontSize: '0.9rem'}}>
+                    Bu sayfa robot olmadığınızı kanıtlamak için Google reCAPTCHA tarafından korunuyor.
+                  </p>
                </Paper>
-
-
-
             </Grid>
-            <Grid item xs={5}>
-
-
-            </Grid>
-
-
-            <Grid  style = {{ backgroundColor: 'rgba(0, 0, 0, 0.8)', color:'white'}} container xs={12} >
-
-               <Grid  item xs={3}/>
-               <Grid container xs={6}>
+            <Grid  style = {{ paddingTop: '3%',  paddingBottom: '3%', backgroundColor: 'rgba(0, 0, 0, 0.8)', color:'white'}} container xs={12} >
+               <Grid  item xs={2}/>
+               <Grid container xs={9}>
                   <Grid item xs={12}>
                      Sorularınız mı var? 0850-390-7444 numaralı telefonu arayın
                   </Grid>
-
+                  <br/>
                   <Grid item xs={3}>
-                     SSS <br/>
+                     <br/> SSS <br/>
                      Çerez Tercihleri <br/>
                      Türkçe (tuş olarak değiştir)
                   </Grid>
                   <Grid item xs={3}>
-                     Yardım Merkezi <br/>
+                     <br/> Yardım Merkezi <br/>
                      Kurumsal Bilgiler
                   </Grid>
                   <Grid item xs={3}>
-                     Kullanım Koşulları
+                     <br/> Kullanım Koşulları
                   </Grid>
                   <Grid item xs={3}>
-                     Gizlilik
+                     <br/> Gizlilik
                   </Grid>
                </Grid>
-               <Grid item xs={3}/>
             </Grid>
          </Grid>
       </div>

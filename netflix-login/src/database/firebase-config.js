@@ -43,3 +43,32 @@ export const auth = getAuth(app);
 
 export default app;
 
+
+    // const configureCaptcha = () => {
+    //    window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
+    //       'size': 'invisible',
+    //       'callback': (response) => {
+    //          // reCAPTCHA solved, allow signInWithPhoneNumber.
+    //          onSignInSubmit();
+    //          console.log("Recaptcha verified.")
+    //       },
+    //    });
+    // }
+
+    // const onSignInSubmit = (e) => {
+    //   e.preventDefault();
+    //   configureCaptcha();
+    //   const phoneNumber = "+90" + this.state.mob;
+    //   console.log(phoneNumber);
+    //   const appVerifier = window.recaptchaVerifier;
+    //
+    //   auth.signInWithPhoneNumber(phoneNumber, appVerifier)
+    //       .then((confirmationResult) => {
+    //          // SMS sent. Prompt user to type the code from the message, then sign the
+    //          // user in with confirmationResult.confirm(code).
+    //          window.confirmationResult = confirmationResult;
+    //          console.log("OTP has been sent");
+    //       }).catch((error) => {
+    //          console.log("SMS not sent");
+    //       });
+    //   }
