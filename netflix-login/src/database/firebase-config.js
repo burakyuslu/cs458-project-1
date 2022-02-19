@@ -1,11 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore, getDocs, collection, query, where } from "firebase/firestore";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyAQrHB_NS7kyK-yE_MrY_H_OorqCSeC_Nw",
   authDomain: "netflix-login-931d9.firebaseapp.com",
@@ -18,57 +15,21 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
-
-// // Get a list of users from database
-// async function getUsers(db) {
-//   const usersCol = collection(db, 'users');
-//   const usersSnapshot = await getDocs(usersCol);
-//   const userList = usersSnapshot.docs.map(doc => doc.data());
-//   return userList;
-// }
 
 export const auth = getAuth(app);
+const db = getFirestore();
 
-// signInWithEmailAndPassword(auth, email, password)
-// .then((userCredential) => {
-//  // Signed in
-//  const user = userCredential.user;
-//  // ...
-// })
-// .catch((error) => {
-//  const errorCode = error.code;
-//  const errorMessage = error.message;
-// });
+const usersRef = collection(db, "users");
 
-export default app;
-
-
-    // const configureCaptcha = () => {
-    //    window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
-    //       'size': 'invisible',
-    //       'callback': (response) => {
-    //          // reCAPTCHA solved, allow signInWithPhoneNumber.
-    //          onSignInSubmit();
-    //          console.log("Recaptcha verified.")
-    //       },
-    //    });
-    // }
-
-    // const onSignInSubmit = (e) => {
-    //   e.preventDefault();
-    //   configureCaptcha();
-    //   const phoneNumber = "+90" + this.state.mob;
-    //   console.log(phoneNumber);
-    //   const appVerifier = window.recaptchaVerifier;
-    //
-    //   auth.signInWithPhoneNumber(phoneNumber, appVerifier)
-    //       .then((confirmationResult) => {
-    //          // SMS sent. Prompt user to type the code from the message, then sign the
-    //          // user in with confirmationResult.confirm(code).
-    //          window.confirmationResult = confirmationResult;
-    //          console.log("OTP has been sent");
-    //       }).catch((error) => {
-    //          console.log("SMS not sent");
-    //       });
-    //   }
+export async function getUserMailByPhoneNumber(phoneNumber) {
+    let mail;
+    const q = query(usersRef, where("phone", "==", phoneNumber));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, " => ", doc.data());
+      console.log(doc.data().email);
+      mail = doc.data().email;
+    });
+    return mail;
+}
