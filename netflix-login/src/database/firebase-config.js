@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, FacebookAuthProvider, signInWithPopup } from "firebase/auth";
 import { getFirestore, getDocs, collection, query, where } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -33,3 +33,45 @@ export async function getUserMailByPhoneNumber(phoneNumber) {
     });
     return mail;
 }
+
+//export async function loginWithFacebookProvider() {
+//    const provider = new FacebookAuthProvider();
+//    signInWithPopup(auth, provider)
+//      .then((result) => {
+//        // The signed-in user info.
+//        const user = result.user;
+//
+//        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+//        const credential = FacebookAuthProvider.credentialFromResult(result);
+//        const isNewUser = credential.additionalUserInfo.isNewUser;
+//        if (isNewUser) {
+//            auth.currentUser.delete();
+//            // The following error will be handled in your catch statement
+//            throw new Error("Girilen Facebook kullanıcı kayıtlarda bulunamadı."
+//                                     + "Netflix email ve şifrenizle girmeyi tekrar deneyin.");
+//        }
+//        // Otherwise, handle login normally
+//        return user;
+//    }).catch( (err) => {
+//        if(err.code === 'auth/account-exists-with-different-credential') {
+//            throw new Error("Kullanıcının giriş yöntemi Facebook olarak seçilmemiş."
+//             + "Lütfen email ve şifrenizle girmeyi tekrar deneyin.");
+//        }
+//        throw new Error("Girilen Facebook kullanıcı kayıtlarda bulunamadı."
+//         + "Netflix email ve şifrenizle girmeyi tekrar deneyin.");
+//    });
+//}
+
+
+//const signInWithFacebook = () => {
+  //  const provider = new FacebookAuthProvider();
+  //  signInWithPopup(auth, provider)
+  //      .then((re) => {
+  //          console.log(re);
+  //          setErrorMessage("Successful login.");
+  //      })
+  //      .catch((error) => {
+  //          console.log(error.message());
+  //          setErrorMessage("Kullanıcı bulunamadı. Error: " + error.message());
+  //      });
+//}

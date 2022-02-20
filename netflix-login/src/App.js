@@ -3,7 +3,7 @@ import {Button, Checkbox, FormControlLabel, FormGroup, Grid, Paper, TextField} f
 import background from "./images/background-img.jpg";
 import React, {useState} from 'react'
 import {auth, getUserMailByPhoneNumber} from "./database/firebase-config";
-import {signInWithEmailAndPassword, signInWithPopup, signInWithPhoneNumber, FacebookAuthProvider } from "firebase/auth";
+import {signInWithEmailAndPassword, FacebookAuthProvider, signInWithPopup  } from "firebase/auth";
 
 
 function App(){
@@ -56,17 +56,32 @@ function App(){
         }
     }
 
-    const signInWithFacebook = () => {
+    const loginWithFacebook = async () => {
         const provider = new FacebookAuthProvider();
         signInWithPopup(auth, provider)
-            .then((re) => {
-                console.log(re);
-                setErrorMessage("Successful login.");
-            })
-            .catch((error) => {
-                console.log(error.message());
-                setErrorMessage("Kullanıcı bulunamadı. Error: " + error.message());
-            });
+          .then((result) => {
+            // The signed-in user info.
+            const user = result.user;
+
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            const credential = FacebookAuthProvider.credentialFromResult(result);
+            const isNewUser = credential.additionalUserInfo.isNewUser;
+            if (isNewUser) {
+                auth.currentUser.delete();
+                // The following error will be handled in your catch statement
+                setErrorMessage("Girilen Facebook kullanıcı kayıtlarda bulunamadı."
+                                         + "Netflix email ve şifrenizle girmeyi tekrar deneyin.");
+            }
+            // Otherwise, handle login normally
+            return user;
+        }).catch( (err) => {
+            if(err.code === 'auth/account-exists-with-different-credential') {
+                setErrorMessage("Kullanıcının giriş yöntemi Facebook olarak seçilmemiş."
+                 + "Lütfen email ve şifrenizle girmeyi tekrar deneyin.");
+            }
+            setErrorMessage("Girilen Facebook kullanıcı kayıtlarda bulunamadı."
+             + "Netflix email ve şifrenizle girmeyi tekrar deneyin.");
+        });
     }
 
     const pageTitle = "N E T F L I X";
@@ -88,7 +103,7 @@ function App(){
                     <h2 style={{color: "white", paddingTop: '2%', marginLeft: '13%'}} >{paperTitle}</h2>
                     {(errorMessage !== "") &&
                     <Paper style={{marginBottom: '3%', backgroundColor: '#E87C03', marginLeft: '13%', maxWidth: '75%'}}
-                              variant="outlined" elevation={5}>
+                              variant="outlined">
                         <p style={{marginLeft: '5%', color:'white', fontSize: '1rem', maxWidth: '90%'}}>
                             {errorMessage}
                         </p>
@@ -119,7 +134,7 @@ function App(){
                             Yardım ister misiniz?</a>
                     </FormGroup>
                     <Button style={{marginLeft: '12%'}}
-                        onClick={signInWithFacebook}
+                        onClick={loginWithFacebook}
                         variant="text">Facebook İle Oturum Aç</Button>
                     <p style={{marginLeft: '13%',  color:'gray', fontSize: '0.9rem'}}>Netflix'e katılmak ister misiniz?
                         <a style={{color:'white'}}> Şimdi kaydolun. </a> </p>
