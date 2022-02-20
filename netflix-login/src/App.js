@@ -103,25 +103,27 @@ function App(){
                     <h2 style={{color: "white", paddingTop: '2%', marginLeft: '13%'}} >{paperTitle}</h2>
                     {(errorMessage !== "") &&
                     <Paper style={{marginBottom: '3%', backgroundColor: '#E87C03', marginLeft: '13%', maxWidth: '75%'}}
-                              variant="outlined">
+                              variant="outlined"
+                              id = "error_message">
                         <p style={{marginLeft: '5%', color:'white', fontSize: '1rem', maxWidth: '90%'}}>
                             {errorMessage}
                         </p>
                     </Paper>}
                     <TextField style={{ marginLeft: '13%', minWidth:'75%', backgroundColor:'white', borderRadius: 5 }}
-                        id="filled-basic"
+                        id="email_phone_text_field"
                         label="E-posta veya telefon numarası"
                         variant="filled"
                         onChange={(event) => setLoginEmail(event.target.value)}/>
                     <TextField style={{ marginTop: '3%', marginLeft: '13%', minWidth:'75%',
                         backgroundColor:'white', borderRadius: 5}}
-                        id="filled-basic"
+                        id="password_text_field"
                         label="Parola"
                         variant="filled"
                         onChange={(event) => setLoginPassword(event.target.value)}/>
                     <Button
                         style={{marginTop:'10%', marginLeft:'13%', minHeight:'10%', minWidth:'75%', backgroundColor:"#ff0000"}}
                         variant="contained"
+                        id="login_button"
                         onClick={handleSubmit}>
                         Oturum Aç
                     </Button>
@@ -135,6 +137,7 @@ function App(){
                     </FormGroup>
                     <Button style={{marginLeft: '12%'}}
                         onClick={loginWithFacebook}
+                            id="login_with_facebook"
                         variant="text">Facebook İle Oturum Aç</Button>
                     <p style={{marginLeft: '13%',  color:'gray', fontSize: '0.9rem'}}>Netflix'e katılmak ister misiniz?
                         <a style={{color:'white'}}> Şimdi kaydolun. </a> </p>
