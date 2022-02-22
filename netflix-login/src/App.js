@@ -3,7 +3,7 @@ import {Button, Checkbox, FormControlLabel, FormGroup, Grid, Paper, TextField} f
 import background from "./images/background-img.jpg";
 import React, {useState} from 'react'
 import {auth, getUserMailByPhoneNumber} from "./database/firebase-config";
-import {signInWithEmailAndPassword, FacebookAuthProvider, signInWithPopup, onAuthStateChanged, signOut  } from "firebase/auth";
+import {signInWithEmailAndPassword, FacebookAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth";
 
 function App(){
     const [loginEmail, setLoginEmail] = useState("");
@@ -104,11 +104,16 @@ function App(){
     const pageTitle = "N E T F L I X";
     const paperTitle = "Oturum Aç";
 
-    // TODO Pelin
-    function logout() {
-
+     const logout = async () => {
+        await signOut(auth);
         setLoggedIn(false);
-    }
+    };
+
+    // // TODO Pelin
+    // function logout() {
+    //
+    //     setLoggedIn(false);
+    // }
 
     return (!loggedIn) ? (
     <div style={{ backgroundImage: `url(${background})`, height: '100%', margin: 0}}>
@@ -224,6 +229,8 @@ function App(){
                <Grid style={{ paddingTop: '15%', marginBottom: '10%'}}  container xs={3}>
                    <Paper style={{paddingBottom: '10%', backgroundColor: 'rgba(0, 0, 0, 0.8)', minWidth: '400px'}}
                           variant="outlined" elevation={3}>
+                       <h1 style={{marginLeft: '13%',  color:'gray', fontSize: '0.9rem'}}>User Logged in:
+                        <a style={{color:'white'}}> {user?.email} </a> </h1>
                        <h2 style={{color: "white", paddingTop: '2%', marginLeft: '13%'}} >Başarılı bir şekilde oturum açıldı!</h2>
                        {(errorMessage !== "") &&
                        <Paper style={{marginBottom: '3%', backgroundColor: '#E87C03', marginLeft: '13%', maxWidth: '75%'}}
@@ -232,6 +239,7 @@ function App(){
                            <p style={{marginLeft: '5%', color:'white', fontSize: '1rem', maxWidth: '90%'}}>
                                {errorMessage}
                            </p>
+
                        </Paper>}
                        <Button
                           style={{marginTop:'10%', marginLeft:'13%', minHeight:'10%', minWidth:'75%', backgroundColor:"#ff0000"}}
