@@ -3,14 +3,17 @@ import {Button, Checkbox, FormControlLabel, FormGroup, Grid, Paper, TextField} f
 import background from "./images/background-img.jpg";
 import React, {useState} from 'react'
 import {auth, getUserMailByPhoneNumber} from "./database/firebase-config";
-import {signInWithEmailAndPassword, FacebookAuthProvider, signInWithPopup  } from "firebase/auth";
-
+import {signInWithEmailAndPassword, FacebookAuthProvider, signInWithPopup, onAuthStateChanged, signOut  } from "firebase/auth";
 
 function App(){
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [user, setUser] = useState({});
 
+    onAuthStateChanged(auth, (currentUser) => {
+        setUser(currentUser);
+    })
 
     const handleSubmit = async () => {
         let emailNotValid = loginEmail.length === 0 || loginEmail.length < 6 || loginEmail.indexOf(' ') >= 0;
@@ -65,7 +68,7 @@ function App(){
 
             // This gives you a Facebook Access Token. You can use it to access the Facebook API.
             const credential = FacebookAuthProvider.credentialFromResult(result);
-            const isNewUser = credential.additionalUserInfo.isNewUser;
+            const isNewUser = credential.additionalUserInfo?.isNewUser;
             if (isNewUser) {
                 auth.currentUser.delete();
                 // The following error will be handled in your catch statement
@@ -73,11 +76,12 @@ function App(){
                                          + "Netflix email ve şifrenizle girmeyi tekrar deneyin.");
             }
             // Otherwise, handle login normally
+              setErrorMessage("Successful login.");
             return user;
         }).catch( (err) => {
             if(err.code === 'auth/account-exists-with-different-credential') {
                 setErrorMessage("Kullanıcının giriş yöntemi Facebook olarak seçilmemiş."
-                 + "Lütfen email ve şifrenizle girmeyi tekrar deneyin.");
+                    + "Lütfen email ve şifrenizle girmeyi tekrar deneyin.");
             }
             setErrorMessage("Girilen Facebook kullanıcı kayıtlarda bulunamadı."
              + "Netflix email ve şifrenizle girmeyi tekrar deneyin.");
