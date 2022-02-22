@@ -23,8 +23,18 @@ function App(){
                 "Lütfen yeniden deneyin ya da yeni bir hesap oluşturun.");
         }
         // is phone number if no @ in string
+        // assumes all phone numbers are Turkish phone numbers
         if(loginEmail.indexOf('@') < 0) {
-            getUserMailByPhoneNumber(loginEmail)
+            // if it contains country code, remove it
+            let phoneNumber = loginEmail;
+            if(loginEmail.startsWith('+90') != false){
+                phoneNumber = '+90' + loginEmail;
+            }
+            if( phoneNumber.length == 13){
+                return setErrorMessage( "Telefon numaranız doğru uzunlukta değil. Lütfen telefon numaranızı kontrol edin.")
+            }
+
+            getUserMailByPhoneNumber(phoneNumber)
             .then((re) => {
                 console.log(re);
                 setLoginEmail(re);
@@ -117,13 +127,30 @@ function App(){
                         id="email_phone_text_field"
                         label="E-posta veya telefon numarası"
                         variant="filled"
-                        onChange={(event) => setLoginEmail(event.target.value)}/>
+                        onChange={(event) => setLoginEmail(event.target.value)}
+                        onPaste={(e) => {
+                            e.preventDefault();
+                            return false;
+                        }}
+                        onCopy={(e) => {
+                            e.preventDefault();
+                            return false;
+                        }}/>
                     <TextField style={{ marginTop: '3%', marginLeft: '13%', minWidth:'75%',
                         backgroundColor:'white', borderRadius: 5}}
                         id="password_text_field"
                         label="Parola"
                         variant="filled"
-                        onChange={(event) => setLoginPassword(event.target.value)}/>
+                        type="password"
+                        onChange={(event) => setLoginPassword(event.target.value)}
+                        onPaste={(e) => {
+                            e.preventDefault();
+                            return false;
+                        }}
+                        onCopy={(e) => {
+                            e.preventDefault();
+                            return false;
+                        }}/>
                     <Button
                         style={{marginTop:'10%', marginLeft:'13%', minHeight:'10%', minWidth:'75%', backgroundColor:"#ff0000"}}
                         variant="contained"
