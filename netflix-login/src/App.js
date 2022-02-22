@@ -22,16 +22,17 @@ function App(){
         // is phone number if no @ in string
         // assumes all phone numbers are Turkish phone numbers
         if(loginEmail.indexOf('@') < 0) {
-            // if it contains country code, remove it
-            let phoneNumber = loginEmail;
-            if(loginEmail.startsWith('+90') != false){
-                phoneNumber = '+90' + loginEmail;
-            }
-            if( phoneNumber.length == 13){
-                return setErrorMessage( "Telefon numaranız doğru uzunlukta değil. Lütfen telefon numaranızı kontrol edin.")
-            }
+            // // if it contains country code, remove it
+            // let phoneNumber = loginEmail;
+            // if(loginEmail.startsWith('+90') != false){
+            //     phoneNumber = '+90' + loginEmail;
+            // }
+            // if( phoneNumber.length == 13){
+            //     return setErrorMessage( "Telefon numaranız doğru uzunlukta değil. Lütfen telefon numaranızı kontrol edin.")
+            // }
 
-            getUserMailByPhoneNumber(phoneNumber)
+            // replace with phoneNumber
+            getUserMailByPhoneNumber(loginEmail)
             .then((re) => {
                 console.log(re);
                 setLoginEmail(re);
