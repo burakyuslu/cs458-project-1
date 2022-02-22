@@ -10,6 +10,7 @@ function App(){
     const [loginPassword, setLoginPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [user, setUser] = useState({});
+    const [loggedIn, setLoggedIn] = useState(false);
 
     onAuthStateChanged(auth, (currentUser) => {
         setUser(currentUser);
@@ -19,8 +20,7 @@ function App(){
         let emailNotValid = loginEmail.length === 0 || loginEmail.length < 6 || loginEmail.indexOf(' ') >= 0;
         // not a valid input
         if(emailNotValid) {
-            return setErrorMessage("Bu e‑posta adresi ile bağlantılı bir hesap bulamadık. " +
-                "Lütfen yeniden deneyin ya da yeni bir hesap oluşturun.");
+            return setErrorMessage("Missing email or phone value. Please re-enter.");
         }
         // is phone number if no @ in string
         // assumes all phone numbers are Turkish phone numbers
@@ -63,6 +63,8 @@ function App(){
             )
             console.log(user);
             setErrorMessage("Successful login.");
+            setLoggedIn(true);
+            setUser(user);
         } catch (error) {
             console.log(error.message());
             setErrorMessage("Kullanıcı bulunamadı. Error: " + error.message());
@@ -86,8 +88,9 @@ function App(){
                                          + "Netflix email ve şifrenizle girmeyi tekrar deneyin.");
             }
             // Otherwise, handle login normally
-              setErrorMessage("Successful login.");
-            return user;
+            setUser(user);
+            setErrorMessage("Successful login.");
+            setLoggedIn(true);
         }).catch( (err) => {
             if(err.code === 'auth/account-exists-with-different-credential') {
                 setErrorMessage("Kullanıcının giriş yöntemi Facebook olarak seçilmemiş."
@@ -101,7 +104,7 @@ function App(){
     const pageTitle = "N E T F L I X";
     const paperTitle = "Oturum Aç";
 
-    return (
+    return (!loggedIn) ? (
     <div style={{ backgroundImage: `url(${background})`, height: '100%', margin: 0}}>
         <Grid container spacing={2}>
             <Grid item xs={4}>
@@ -202,7 +205,7 @@ function App(){
             </Grid>
         </Grid>
     </div>
-    );
+    ) : <div/>;
 }
 
 export default App;
