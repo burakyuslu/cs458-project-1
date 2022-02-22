@@ -30,7 +30,7 @@ function App(){
             if(loginEmail.startsWith('+90') != false){
                 phoneNumber = '+90' + loginEmail;
             }
-            if( phoneNumber.length == 13){
+            if( phoneNumber.length != 13){
                 return setErrorMessage( "Telefon numaranız doğru uzunlukta değil. Lütfen telefon numaranızı kontrol edin.")
             }
 
