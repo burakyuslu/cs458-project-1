@@ -113,13 +113,30 @@ function App(){
                         id="email_phone_text_field"
                         label="E-posta veya telefon numarası"
                         variant="filled"
-                        onChange={(event) => setLoginEmail(event.target.value)}/>
+                        onChange={(event) => setLoginEmail(event.target.value)}
+                        onPaste={(e) => {
+                            e.preventDefault();
+                            return false;
+                        }}
+                        onCopy={(e) => {
+                            e.preventDefault();
+                            return false;
+                        }}/>
                     <TextField style={{ marginTop: '3%', marginLeft: '13%', minWidth:'75%',
                         backgroundColor:'white', borderRadius: 5}}
                         id="password_text_field"
                         label="Parola"
                         variant="filled"
-                        onChange={(event) => setLoginPassword(event.target.value)}/>
+                        type="password"
+                        onChange={(event) => setLoginPassword(event.target.value)}
+                        onPaste={(e) => {
+                            e.preventDefault();
+                            return false;
+                        }}
+                        onCopy={(e) => {
+                            e.preventDefault();
+                            return false;
+                        }}/>
                     <Button
                         style={{marginTop:'10%', marginLeft:'13%', minHeight:'10%', minWidth:'75%', backgroundColor:"#ff0000"}}
                         variant="contained"
