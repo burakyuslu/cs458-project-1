@@ -20,8 +20,15 @@ function App(){
                 "Lütfen yeniden deneyin ya da yeni bir hesap oluşturun.");
         }
         // is phone number if no @ in string
+        // assumes all phone numbers are Turkish phone numbers
         if(loginEmail.indexOf('@') < 0) {
-            getUserMailByPhoneNumber(loginEmail)
+            // if it contains country code, remove it
+            let phoneNumber = loginEmail;
+            if(loginEmail.startsWith('+90') != false){
+                phoneNumber = '+90' + loginEmail;
+            }
+
+            getUserMailByPhoneNumber(phoneNumber)
             .then((re) => {
                 console.log(re);
                 setLoginEmail(re);
