@@ -104,6 +104,12 @@ function App(){
     const pageTitle = "N E T F L I X";
     const paperTitle = "Oturum Aç";
 
+    // TODO Pelin
+    function logout() {
+
+        setLoggedIn(false);
+    }
+
     return (!loggedIn) ? (
     <div style={{ backgroundImage: `url(${background})`, height: '100%', margin: 0}}>
         <Grid container spacing={2}>
@@ -205,7 +211,62 @@ function App(){
             </Grid>
         </Grid>
     </div>
-    ) : <div/>;
+    ) :
+       <div style={{ backgroundImage: `url(${background})`, height: '100%', margin: 0}}>
+           <Grid container spacing={2}>
+               <Grid item xs={4}>
+                   <div style={{ paddingLeft: '10%', paddingTop: '3%'}}>
+                       <p style = {{ color: 'red', fontSize:'42px', fontFamily:'-moz-initial', fontWeight:'bold'}}>
+                           {pageTitle}
+                       </p>
+                   </div>
+               </Grid>
+               <Grid style={{ paddingTop: '15%', marginBottom: '10%'}}  container xs={3}>
+                   <Paper style={{paddingBottom: '10%', backgroundColor: 'rgba(0, 0, 0, 0.8)', minWidth: '400px'}}
+                          variant="outlined" elevation={3}>
+                       <h2 style={{color: "white", paddingTop: '2%', marginLeft: '13%'}} >Başarılı bir şekilde oturum açıldı!</h2>
+                       {(errorMessage !== "") &&
+                       <Paper style={{marginBottom: '3%', backgroundColor: '#E87C03', marginLeft: '13%', maxWidth: '75%'}}
+                              variant="outlined"
+                              id = "error_message">
+                           <p style={{marginLeft: '5%', color:'white', fontSize: '1rem', maxWidth: '90%'}}>
+                               {errorMessage}
+                           </p>
+                       </Paper>}
+                       <Button
+                          style={{marginTop:'10%', marginLeft:'13%', minHeight:'10%', minWidth:'75%', backgroundColor:"#ff0000"}}
+                          variant="contained"
+                          id="logout_button"
+                          onClick={logout}>
+                           Oturumu Kapat
+                       </Button>
+                   </Paper>
+               </Grid>
+               <Grid  style = {{ paddingTop: '3%',  paddingBottom: '3%', backgroundColor: 'rgba(0, 0, 0, 0.8)', color:'white'}} container xs={12} >
+                   <Grid  item xs={2}/>
+                   <Grid container xs={9}>
+                       <Grid item xs={12}>
+                           Sorularınız mı var? 0850-390-7444 numaralı telefonu arayın
+                       </Grid>
+                       <Grid item xs={3}>
+                           <br/> SSS <br/>
+                           Çerez Tercihleri <br/>
+                           Türkçe (tuş olarak değiştir)
+                       </Grid>
+                       <Grid item xs={3}>
+                           <br/> Yardım Merkezi <br/>
+                           Kurumsal Bilgiler
+                       </Grid>
+                       <Grid item xs={3}>
+                           <br/> Kullanım Koşulları
+                       </Grid>
+                       <Grid item xs={3}>
+                           <br/> Gizlilik
+                       </Grid>
+                   </Grid>
+               </Grid>
+           </Grid>
+       </div>
 }
 
 export default App;
