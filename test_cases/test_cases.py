@@ -8,20 +8,20 @@ from selenium.webdriver.common.keys import Keys
 
 driver = webdriver.Chrome()
 firefox_driver = webdriver.Firefox()
-edge_driver = webdriver.Edge()
+explorer_driver = webdriver.Ie()
 
 
 driver.get("http://localhost:3000/")
 firefox_driver.get("http://localhost:3000/")
-edge_driver.get("http://localhost:3000/")
+explorer_driver.get("http://localhost:3000/")
 
 w_wait = WebDriverWait(driver, 10)
 w_wait_firefox = WebDriverWait(firefox_driver, 10)
-w_wait_edge = WebDriverWait(edge_driver, 10)
+w_wait_explorer = WebDriverWait(explorer_driver, 10)
 
 action = ActionChains(driver)
 action_firefox = ActionChains(firefox_driver)
-action_edge = ActionChains(edge_driver)
+action_explorer = ActionChains(explorer_driver)
 
 def case_1_1():
     """
@@ -112,21 +112,21 @@ def case2_1():
 
 def case2_2():
     """
-        Check if the application runs in other browsers such as Edge as well as Chrome.
+        Check if the application runs in other browsers such as Internet Explorer as well as Chrome.
         :return: None
         """
-    email_phone_text_field = edge_driver.find_element_by_id("email_phone_text_field")
+    email_phone_text_field = explorer_driver.find_element_by_id("email_phone_text_field")
     email_phone_text_field.send_keys("test1@test.com")
 
-    password_text_field = edge_driver.find_element_by_id("password_text_field")
+    password_text_field = explorer_driver.find_element_by_id("password_text_field")
     password_text_field.send_keys("test_1")
 
-    login_button = edge_driver.find_element_by_id("login_button")
+    login_button = explorer_driver.find_element_by_id("login_button")
     login_button.click()
 
-    w_wait_edge.until(ec.presence_of_element_located((By.ID, "error_message")))
+    w_wait_explorer.until(ec.presence_of_element_located((By.ID, "error_message")))
 
-    incoming_message = edge_driver.find_element_by_id("error_message").text
+    incoming_message = explorer_driver.find_element_by_id("error_message").text
 
     assert incoming_message.startswith("Successful")
     print("Test successful")
@@ -233,8 +233,8 @@ def initiate_test_cases():
     #case_1_1()
     #case_1_2()
     #case_1_3()
-    case2_1()
-    #case2_2()
+    #case2_1()
+    case2_2()
     #case3_1()
     #case3_2()
     #case_4()
