@@ -28,12 +28,10 @@ def case_1_1():
     login_button.click()
 
     w_wait.until(ec.presence_of_element_located((By.ID, "error_message")))
-    fail_message = "Bu e‑posta adresi ile bağlantılı bir hesap bulamadık. Lütfen yeniden deneyin ya da yeni bir hesap oluşturun."
-    success_message = "Login Successful."
 
     incoming_message = driver.find_element_by_id("error_message").text
 
-    assert fail_message.startswith("Bu") == incoming_message.startswith("Bu")
+    assert incoming_message.startswith("Missing")
     print("Test successful")
 
 
@@ -52,12 +50,10 @@ def case_1_2():
     login_button.click()
 
     w_wait.until(ec.presence_of_element_located((By.ID, "error_message")))
-    fail_message = "Bu e‑posta adresi ile bağlantılı bir hesap bulamadık. Lütfen yeniden deneyin ya da yeni bir hesap oluşturun."
-    success_message = "Login Successful."
 
     incoming_message = driver.find_element_by_id("error_message").text
 
-    assert fail_message.startswith("Bu") == incoming_message.startswith("Bu")
+    assert incoming_message.startswith("Parola")
     print("Test successful")
 
 
@@ -76,12 +72,10 @@ def case_1_3():
     login_button.click()
 
     w_wait.until(ec.presence_of_element_located((By.ID, "error_message")))
-    fail_message = "Bu e‑posta adresi ile bağlantılı bir hesap bulamadık. Lütfen yeniden deneyin ya da yeni bir hesap oluşturun."
-    success_message = "Login Successful."
 
     incoming_message = driver.find_element_by_id("error_message").text
 
-    assert fail_message.startswith("Bu") == incoming_message.startswith("Bu")
+    assert incoming_message.startswith("Missing")
     print("Test successful")
 
 
@@ -90,9 +84,8 @@ def case_2():
     pass
 
 
-def case_3():
+def case3_1():
     """
-    Checking for the phone number login with +90
     Checking for the phone number login without +90
     :return: None
     """
@@ -111,7 +104,13 @@ def case_3():
     assert incoming_message.startswith("Successful")
     print("Test 3 -- Phone number without +90 -- successful.")
 
-    # Test case for login check with phone number starting with +90
+
+
+def case3_2():
+    """
+    Checking for the phone number login with +90
+    :return: None
+    """
     email_phone_text_field2 = driver.find_element_by_id("email_phone_text_field")
     email_phone_text_field2.send_keys("+901231231245")
 
@@ -126,7 +125,6 @@ def case_3():
 
     assert incoming_message.startswith("Successful")
     print("Test 3 -- Phone number starting with +90 -- successful.")
-
 
 def case_4():
     """
@@ -178,7 +176,7 @@ def case_5():
     print("test 5 successful")
 
 
-def initiate_all_test_cases():
+def initiate_test_cases():
     """
     Function that initiates all the test cases.
     Uncomment/Comment test cases for checking one by one.
@@ -186,17 +184,18 @@ def initiate_all_test_cases():
     """
     print("Started test cases ---------------------------------------")
     case_1_1()
-    case_1_2()
-    case_1_3()
-    case_2()
-    case_3()
-    case_4()
-    case_5()
+    #case_1_2()
+    #case_1_3()
+    #case_2()
+    #case3_1()
+    #case3_2()
+    #case_4()
+    #case_5()
     print("Test cases finished successfully -------------------------")
 
 
 # Run the test cases
-initiate_all_test_cases()
+initiate_test_cases()
 
 # Quit the driver
 driver.quit()
