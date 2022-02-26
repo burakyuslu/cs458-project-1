@@ -1,3 +1,4 @@
+/*
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, FacebookAuthProvider, signInWithPopup } from "firebase/auth";
@@ -75,3 +76,5 @@ export async function getUserMailByPhoneNumber(phoneNumber) {
   //          setErrorMessage("Kullanıcı bulunamadı. Error: " + error.message());
   //      });
 //}
+
+*/
