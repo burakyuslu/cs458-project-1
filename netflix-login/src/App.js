@@ -2,50 +2,10 @@ import './App.css';
 import {Button, Checkbox, FormControlLabel, FormGroup, Grid, Paper, TextField} from "@mui/material";
 import background from "./images/background-img.jpg";
 import React, {useState} from 'react'
-//import {auth, getUserMailByPhoneNumber} from "./database/firebase-config";
+import {auth, getUserMailByPhoneNumber} from "./database/firebase-config";
 import {getAuth, signInWithEmailAndPassword, FacebookAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth";
 
-// firebase-config -------------------------------------
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-
-import { getFirestore, getDocs, collection, query, where } from "firebase/firestore";
-//firebaseconfig --------------------------------------
-
 function App(){
-    //firebase-config -----------------------------------------------------
-    const firebaseConfig = {
-      apiKey: "AIzaSyAQrHB_NS7kyK-yE_MrY_H_OorqCSeC_Nw",
-      authDomain: "netflix-login-931d9.firebaseapp.com",
-      projectId: "netflix-login-931d9",
-      storageBucket: "netflix-login-931d9.appspot.com",
-      messagingSenderId: "983589309155",
-      appId: "1:983589309155:web:684d23091c73ac79d5d3d6",
-      measurementId: "G-4EWXSK1XXH"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-
-    const auth = getAuth(app);
-    const db = getFirestore();
-
-    const usersRef = collection(db, "users");
-
-    async function getUserMailByPhoneNumber(phoneNumber) {
-        let mail;
-        const q = query(usersRef, where("phone", "==", phoneNumber));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-          console.log(doc.data().email);
-          mail = doc.data().email;
-        });
-        return mail;
-    }
-
-    //firebase-login -----------------------------------------------
 
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
