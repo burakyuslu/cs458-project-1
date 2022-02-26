@@ -57,7 +57,7 @@ function App(){
         setUser(currentUser);
     })
 
-    const handleSubmit = async () => {
+        const handleSubmit = async () => {
         let emailNotValid = loginEmail.length === 0 || loginEmail.length < 6 || loginEmail.indexOf(' ') >= 0;
         // not a valid input
         if(emailNotValid) {
