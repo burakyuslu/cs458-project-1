@@ -76,3 +76,20 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 1645904669796	Marionette	INFO	Listening on port 62505
 1645904670211	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
 1645904843444	Marionette	INFO	Stopped listening on port 62505
+1645905139133	geckodriver	INFO	Listening on 127.0.0.1:62831
+1645905142195	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\CANKIR~1\\AppData\\Local\\Temp\\rust_mozprofilemE1wv4"
+1645905142526	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\cankirsallioba\\AppData\\Local\\Temp\\rust_mozprofilemE1wv4\\search.json.mozlz4", (void 0)))
+1645905144373	Marionette	INFO	Listening on port 62845
+1645905144877	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: , line 0: NS_ERROR_NOT_AVAILABLE
+1645906018880	Marionette	INFO	Stopped listening on port 62845
+C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\CANKIR~1\\AppData\\Local\\Temp\\rust_mozprofile3NmSyo"
+1645905495494	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\cankirsallioba\\AppData\\Local\\Temp\\rust_mozprofile3NmSyo\\search.json.mozlz4", (void 0)))
+1645905497259	Marionette	INFO	Listening on port 63087
+1645905497303	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1645906024321	Marionette	INFO	Stopped listening on port 63087
+[Parent 25308, IPC I/O Parent] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc:167
+[Parent 25308, IPC I/O Parent] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc:167
+[Parent 25308, IPC I/O Parent] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc:167

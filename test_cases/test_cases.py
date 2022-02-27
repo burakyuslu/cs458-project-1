@@ -8,20 +8,16 @@ from selenium.webdriver.common.keys import Keys
 
 driver = webdriver.Chrome()
 firefox_driver = webdriver.Firefox()
-explorer_driver = webdriver.Ie()
 
 
 driver.get("http://localhost:3000/")
 firefox_driver.get("http://localhost:3000/")
-explorer_driver.get("http://localhost:3000/")
 
 w_wait = WebDriverWait(driver, 10)
 w_wait_firefox = WebDriverWait(firefox_driver, 10)
-w_wait_explorer = WebDriverWait(explorer_driver, 10)
 
 action = ActionChains(driver)
 action_firefox = ActionChains(firefox_driver)
-action_explorer = ActionChains(explorer_driver)
 
 def case_1_1():
     """
@@ -89,7 +85,7 @@ def case_1_3():
     print("Test successful")
 
 
-def case2_1():
+def case2():
     """
     Check if the application runs in other browsers such as Firefox as well as Chrome.
     :return: None
@@ -110,26 +106,6 @@ def case2_1():
     assert incoming_message.startswith("Successful")
     print("Test successful")
 
-def case2_2():
-    """
-        Check if the application runs in other browsers such as Internet Explorer as well as Chrome.
-        :return: None
-        """
-    email_phone_text_field = explorer_driver.find_element_by_id("email_phone_text_field")
-    email_phone_text_field.send_keys("test1@test.com")
-
-    password_text_field = explorer_driver.find_element_by_id("password_text_field")
-    password_text_field.send_keys("test_1")
-
-    login_button = explorer_driver.find_element_by_id("login_button")
-    login_button.click()
-
-    w_wait_explorer.until(ec.presence_of_element_located((By.ID, "error_message")))
-
-    incoming_message = explorer_driver.find_element_by_id("error_message").text
-
-    assert incoming_message.startswith("Successful")
-    print("Test successful")
 
 def case3_1():
     """
@@ -230,11 +206,10 @@ def initiate_test_cases():
     :return: None
     """
     print("Started test cases ---------------------------------------")
-    #case_1_1()
+    case_1_1()
     #case_1_2()
     #case_1_3()
-    #case2_1()
-    case2_2()
+    #case2()
     #case3_1()
     #case3_2()
     #case_4()
