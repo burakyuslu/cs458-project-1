@@ -68,6 +68,7 @@ function App(){
                     phoneNumber = '+90' + loginEmail;
                 }
             }
+            console.log(phoneNumber);
             if( phoneNumber.length !== 13){
                 return setErrorMessage(errorTexts["wrongPhoneNo"]);
             }
@@ -76,6 +77,7 @@ function App(){
             .then((re) => {
                 console.log(re);
                 setLoginEmail(re);
+                console.log(loginEmail);
             })
             .catch((error) => {
                 console.log(error.message());
@@ -88,6 +90,7 @@ function App(){
     }
 
     const loginWithEmailPassword = async (loginEmail, loginPassword) => {
+        console.log("Login Email" + loginEmail);
         signInWithEmailAndPassword(
             auth,
             loginEmail,

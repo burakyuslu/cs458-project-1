@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
+import time
 
 errorTexts = {
     "missingField": "Missing email/phone value or password. Please re-enter.",
@@ -17,7 +18,7 @@ errorTexts = {
     "wrongAuthMethod": "Users account is not matched with a Facebook account. "
                        + "Please try again with your Netflix email and password.",
     "success": "Successful login."
-};
+}
 
 driver = webdriver.Chrome()
 firefox_driver = webdriver.Firefox()
@@ -72,7 +73,7 @@ def case_1_2():
 
     incoming_message = driver.find_element_by_id("error_message").text
 
-    assert incoming_message.startswith("Parola")
+    assert incoming_message.startswith("Missing")
     print("Test successful")
 
 
@@ -97,6 +98,26 @@ def case_1_3():
     assert incoming_message.startswith("Missing")
     print("Test successful")
 
+
+def case_1_4():
+    """
+    Checking for successful login.
+    :return: None
+    """
+    email_phone_text_field = driver.find_element_by_id("email_phone_text_field")
+    email_phone_text_field.send_keys("test1@test.com")
+
+    password_text_field = driver.find_element_by_id("password_text_field")
+    password_text_field.send_keys("test_1")
+
+    login_button = driver.find_element_by_id("login_button")
+    login_button.click()
+
+    w_wait.until(ec.presence_of_element_located((By.ID, "error_message")))
+    incoming_message = driver.find_element_by_id("error_message").text
+
+    assert incoming_message.startswith('Successful')
+    print("Test successful")
 
 def case2():
     """
@@ -126,7 +147,7 @@ def case3_1():
     :return: None
     """
     email_phone_text_field = driver.find_element_by_id("email_phone_text_field")
-    email_phone_text_field.send_keys("01231231245")
+    email_phone_text_field.send_keys("1231231231")
 
     password_text_field = driver.find_element_by_id("password_text_field")
     password_text_field.send_keys("test_1")
@@ -148,7 +169,7 @@ def case3_2():
     :return: None
     """
     email_phone_text_field2 = driver.find_element_by_id("email_phone_text_field")
-    email_phone_text_field2.send_keys("+901231231245")
+    email_phone_text_field2.send_keys("+901231231231")
 
     password_text_field2 = driver.find_element_by_id("password_text_field")
     password_text_field2.send_keys("test_1")
@@ -164,23 +185,55 @@ def case3_2():
 
 def case_4():
     """
-    Checking for successful login.
+    Checking for successful login with facebook
     :return: None
     """
-    email_phone_text_field = driver.find_element_by_id("email_phone_text_field")
-    email_phone_text_field.send_keys("test1@test.com")
 
-    password_text_field = driver.find_element_by_id("password_text_field")
-    password_text_field.send_keys("test_1")
+    login_with_facebook_button = driver.find_element_by_id("login_with_facebook")
+    login_with_facebook_button.click()
+    time.sleep(1)
 
-    login_button = driver.find_element_by_id("login_button")
+    # switch to facebook tab
+    driver.switch_to_window(driver.window_handles[1])
+    time.sleep(3)
+
+    facebook_email_phone_text_field = driver.find_element_by_id("email")
+    facebook_email_phone_text_field.send_keys("elif.kurtay00@gmail.com")
+    time.sleep(1)
+
+    facebook_password_text_field = driver.find_element_by_id("pass")
+    facebook_password_text_field.send_keys("wzJDngPYEk8TXEfqkDky")
+    time.sleep(1)
+
+    login_button = driver.find_element_by_id("loginbutton")
     login_button.click()
+
+    webdriver.ActionChains(driver).send_keys(Keys.TAB).perform()
+    webdriver.ActionChains(driver).send_keys(Keys.TAB).perform()
+    webdriver.ActionChains(driver).send_keys(Keys.ENTER).perform()
+
+    # switch back to chrome[0]
+    driver.switch_to_window(driver.window_handles[0])
+
+    # check the database for the email of the fb user's email
+    # if it exists, login
+    # if not,
+
+    fail_message = "Girilen Facebook kullanıcı kayıtlarda bulunamadı. Netflix email ve şifrenizle girmeyi tekrar deneyin."
+    success_message = "Successful Login."
+
 
     w_wait.until(ec.presence_of_element_located((By.ID, "error_message")))
     incoming_message = driver.find_element_by_id("error_message").text
 
-    assert incoming_message.startswith('Successful')
-    print("test 4 successful")
+    if incoming_message.startswith("Girilen") == fail_message.startswith("Girilen"):
+        assert fail_message.startswith("Girilen") == incoming_message.startswith("Girilen")
+        print("Test 4 successful")
+
+    if incoming_message.startswith("Successful") == success_message.startswith("Successful"):
+        assert success_message.startswith("Successful") == incoming_message.startswith("Successful")
+        print("Test 4 successful")
+
 
 
 def case_5():
@@ -197,13 +250,10 @@ def case_5():
     password_text_field.click()
     webdriver.ActionChains(driver).key_down(Keys.CONTROL).send_keys("c").perform()
 
-
     password_text_field.click()
     password_text_field = driver.find_element_by_id("password_text_field")
     password_text_field.send_keys("")
 
-
-    print("PW TEXT FIELD", password_text_field.text)
     email_phone_text_field.click()
 
     webdriver.ActionChains(driver).key_down(Keys.CONTROL).send_keys("v").perform()
@@ -235,4 +285,5 @@ initiate_test_cases()
 
 # Quit the driver
 driver.quit()
+firefox_driver.quit()
 

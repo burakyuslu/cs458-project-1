@@ -31,6 +31,8 @@ export async function getUserMailByPhoneNumber(phoneNumber) {
       console.log(doc.data().email);
       mail = doc.data().email;
     });
+          console.log("etUserMailByPhoneNumber" + mail);
+
     return mail;
 }
 
