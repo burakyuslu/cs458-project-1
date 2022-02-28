@@ -73,20 +73,18 @@ function App(){
                 return setErrorMessage(errorTexts["wrongPhoneNo"]);
             }
 
-            getUserMailByPhoneNumber(phoneNumber)
+            await getUserMailByPhoneNumber(phoneNumber)
             .then((re) => {
                 console.log(re);
-                setLoginEmail(re);
-                console.log(loginEmail);
+                loginWithEmailPassword(re, loginPassword);
             })
             .catch((error) => {
                 console.log(error.message());
                 setErrorMessage(errorTexts["phoneNoDoesNotExist"]);
             });
+        } else {
+            loginWithEmailPassword(loginEmail, loginPassword);
         }
-
-        setErrorMessage("");
-        loginWithEmailPassword(loginEmail, loginPassword);
     }
 
     const loginWithEmailPassword = async (loginEmail, loginPassword) => {
