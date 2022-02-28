@@ -52,7 +52,7 @@ def case_1_1():
     incoming_message = driver.find_element_by_id("error_message").text
 
     assert incoming_message.startswith("Missing")
-    print("Test successful")
+    print("Test 1.1 successful")
 
 
 def case_1_2():
@@ -74,7 +74,7 @@ def case_1_2():
     incoming_message = driver.find_element_by_id("error_message").text
 
     assert incoming_message.startswith("Missing")
-    print("Test successful")
+    print("Test 1.2 successful")
 
 
 def case_1_3():
@@ -96,7 +96,7 @@ def case_1_3():
     incoming_message = driver.find_element_by_id("error_message").text
 
     assert incoming_message.startswith("Missing")
-    print("Test successful")
+    print("Test 1.3 successful")
 
 
 def case_1_4():
@@ -117,7 +117,7 @@ def case_1_4():
     incoming_message = driver.find_element_by_id("error_message").text
 
     assert incoming_message.startswith('Successful')
-    print("Test successful")
+    print("Test 1.4 successful")
 
 def case2():
     """
@@ -138,7 +138,7 @@ def case2():
     incoming_message = firefox_driver.find_element_by_id("error_message").text
 
     assert incoming_message.startswith("Successful")
-    print("Test successful")
+    print("Test 2 successful")
 
 
 def case3_1():
@@ -159,8 +159,7 @@ def case3_1():
     incoming_message = driver.find_element_by_id("error_message").text
 
     assert incoming_message.startswith("Successful")
-    print("Test 3 -- Phone number without +90 -- successful.")
-
+    print("Test 3.1 -- Phone number without +90 -- successful.")
 
 
 def case3_2():
@@ -181,9 +180,9 @@ def case3_2():
     incoming_message = driver.find_element_by_id("error_message").text
 
     assert incoming_message.startswith("Successful")
-    print("Test 3 -- Phone number starting with +90 -- successful.")
+    print("Test 3.2 -- Phone number starting with +90 -- successful.")
 
-def case_4():
+def case_4_1():
     """
     Checking for successful login with facebook
     :return: None
@@ -225,8 +224,54 @@ def case_4():
 
     if incoming_message.startswith("Successful") == success_message.startswith("Successful"):
         assert success_message.startswith("Successful") == incoming_message.startswith("Successful")
-        print("Test 4 successful")
+        print("Test 4.1 successful")
 
+
+def case_4_2():
+    """
+    Checking for successful login with facebook
+    :return: None
+    """
+
+    login_with_facebook_button = driver.find_element_by_id("login_with_facebook")
+    login_with_facebook_button.click()
+    time.sleep(1)
+
+    # switch to facebook tab
+    driver.switch_to_window(driver.window_handles[1])
+    time.sleep(3)
+
+    facebook_email_phone_text_field = driver.find_element_by_id("email")
+    facebook_email_phone_text_field.send_keys("elif.kurtay00@gmail.com")
+    time.sleep(1)
+
+    facebook_password_text_field = driver.find_element_by_id("pass")
+    facebook_password_text_field.send_keys("wrong_password")
+    time.sleep(1)
+
+    login_button = driver.find_element_by_id("loginbutton")
+    login_button.click()
+
+    webdriver.ActionChains(driver).send_keys(Keys.TAB).perform()
+    webdriver.ActionChains(driver).send_keys(Keys.TAB).perform()
+    webdriver.ActionChains(driver).send_keys(Keys.ENTER).perform()
+
+    # close the Facebook popup
+    driver.close()
+
+    # switch back to chrome[0]
+    driver.switch_to_window(driver.window_handles[0])
+
+    # check the database for the email of the fb user's email
+    # if it exists, login
+    # if not,
+    success_message = "Facebook"
+
+    w_wait.until(ec.presence_of_element_located((By.ID, "error_message")))
+    incoming_message = driver.find_element_by_id("error_message").text
+
+    assert success_message.startswith("Facebook") == incoming_message.startswith("Facebook")
+    print("Test 4.2 successful")
 
 
 def case_5():
@@ -252,7 +297,7 @@ def case_5():
     webdriver.ActionChains(driver).key_down(Keys.CONTROL).send_keys("v").perform()
 
     assert email_phone_text_field.text == ''
-    print("test 5 successful")
+    print("Test 5 successful")
 
 
 def initiate_test_cases():
@@ -269,7 +314,8 @@ def initiate_test_cases():
     #case2()
     #case3_1()
     #case3_2()
-    #case_4()
+    #case_4_1()
+    #case_4_2()
     #case_5()
     print("Test cases finished successfully -------------------------")
 
