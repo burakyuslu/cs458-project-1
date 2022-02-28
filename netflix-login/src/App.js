@@ -3,9 +3,36 @@ import {Button, Checkbox, FormControlLabel, FormGroup, Grid, Paper, TextField} f
 import background from "./images/background-img.jpg";
 import React, {useState} from 'react'
 import {auth, getUserMailByPhoneNumber} from "./database/firebase-config";
-import {getAuth, signInWithEmailAndPassword, FacebookAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth";
+import {signInWithEmailAndPassword, FacebookAuthProvider, signInWithPopup, signOut} from "firebase/auth";
 import BottomDrawer from "./component/BottomDrawer.js"
 import Header from "./component/Header.js"
+
+const screenTexts = [
+    "Sign In",
+    "User Logged in: ",
+    "Sign out",
+    "Email or phone number",
+    "Password",
+    "Remember me",
+    "Need help?",
+    "Login with Facebook",
+    "New to Netflix?",
+    "Sign up now.",
+    "This page is protected by Google reCAPTCHA to ensure you're not a bot."
+];
+
+const errorTexts = {
+    "missingField": "Missing email/phone value or password. Please re-enter.",
+    "invalidInput": "Email/phone value or password is either too short or includes invalid characters. Please re-enter.",
+    "wrongPhoneNo": "Phone number does not have correct length. Please re-enter.",
+    "phoneNoDoesNotExist": "We could not find an account with this phone number. Please try again or open a new account.",
+    "accountDoesNotExist": "We could not find an account with the given credentials.",
+    "FacebookDNE": "Facebook credentials did not match with a Netflix account. "
+        + "Please try again with your Netflix email and password.",
+    "wrongAuthMethod": "Users account is not matched with a Facebook account. "
+        + "Please try again with your Netflix email and password.",
+    "success": "Successful login."
+};
 
 function App(){
 
@@ -17,11 +44,17 @@ function App(){
 
 
     const handleSubmit = async () => {
-        let emailNotValid = loginEmail.length === 0 || loginEmail.length < 6 || loginEmail.indexOf(' ') >= 0;
-        // not a valid input
-        if(emailNotValid) {
-            return setErrorMessage("Missing email or phone value. Please re-enter.");
+        // empty field
+        if(loginEmail.length === 0 || loginPassword.length === 0) {
+            return setErrorMessage(errorTexts["missingField"]);
         }
+        // not a valid input
+        let emailNotValid = loginEmail.length < 6 || loginEmail.indexOf(' ') >= 0;
+        let passwordNotValid = loginPassword.length < 6 || loginPassword.indexOf(' ') >= 0;
+        if(emailNotValid || passwordNotValid) {
+            return setErrorMessage(errorTexts["invalidInput"]);
+        }
+
         // is phone number if no @ in string
         // assumes all phone numbers are Turkish phone numbers
         if(loginEmail.indexOf('@') < 0) {
@@ -36,7 +69,7 @@ function App(){
                 }
             }
             if( phoneNumber.length !== 13){
-                return setErrorMessage( "Telefon numaranız doğru uzunlukta değil. Lütfen telefon numaranızı kontrol edin.")
+                return setErrorMessage(errorTexts["wrongPhoneNo"]);
             }
 
             getUserMailByPhoneNumber(phoneNumber)
@@ -46,15 +79,10 @@ function App(){
             })
             .catch((error) => {
                 console.log(error.message());
-                setErrorMessage("Bu telefon numarası ile bağlantılı bir hesap bulamadık. " +
-                                        "Lütfen yeniden deneyin ya da yeni bir hesap oluşturun.");
+                setErrorMessage(errorTexts["phoneNoDoesNotExist"]);
             });
         }
 
-        let passwordNotValid = loginPassword.length === 0 || loginPassword.length < 6 || loginPassword.indexOf(' ') >= 0;
-        if(passwordNotValid){
-            return setErrorMessage("Parola yanlış. Lütfen yeniden deneyin ya da parolanızı sıfırlayın.");
-        }
         setErrorMessage("");
         loginWithEmailPassword(loginEmail, loginPassword);
     }
@@ -66,12 +94,12 @@ function App(){
             loginPassword,
         ).then( (user) => {
             console.log(user);
-            setErrorMessage("Successful login.");
+            setErrorMessage(errorTexts["success"]);
             setLoggedIn(true);
             setUser(user);
         }).catch( (error) => {
             console.log(error.message);
-            setErrorMessage("Kullanıcı bulunamadı. Error: " + error.message);
+            setErrorMessage(errorTexts["accountDoesNotExist"] + " Error: " + error.message);
         });
     }
 
@@ -88,36 +116,20 @@ function App(){
             if (isNewUser) {
                 auth.currentUser.delete();
                 // The following error will be handled in your catch statement
-                setErrorMessage("Girilen Facebook kullanıcı kayıtlarda bulunamadı."
-                                         + "Netflix email ve şifrenizle girmeyi tekrar deneyin.");
+                setErrorMessage(errorTexts["FacebookDNE"]);
+                return;
             }
             // Otherwise, handle login normally
             setUser(user);
-            setErrorMessage("Successful login.");
+            setErrorMessage(errorTexts["success"]);
             setLoggedIn(true);
         }).catch( (err) => {
             if(err.code === 'auth/account-exists-with-different-credential') {
-                setErrorMessage("Kullanıcının giriş yöntemi Facebook olarak seçilmemiş."
-                    + "Lütfen email ve şifrenizle girmeyi tekrar deneyin.");
+                setErrorMessage(errorTexts["wrongAuthMethod"]);
             }
-            setErrorMessage("Girilen Facebook kullanıcı kayıtlarda bulunamadı."
-             + "Netflix email ve şifrenizle girmeyi tekrar deneyin.");
+            setErrorMessage(errorTexts["FacebookDNE"]);
         });
     }
-
-    const screenTexts = [
-        "Sign In",
-        "User Logged in: ",
-        "Sign out",
-        "Email or phone number",
-        "Password",
-        "Remember me",
-        "Need help?",
-        "Login with Facebook",
-        "New to Netflix?",
-        "Sign up now.",
-        "This page is protected by Google reCAPTCHA to ensure you're not a bot."
-    ];
 
      const logout = async () => {
         await signOut(auth);

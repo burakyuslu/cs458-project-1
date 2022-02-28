@@ -6,6 +6,19 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 
+errorTexts = {
+    "missingField": "Missing email/phone value or password. Please re-enter.",
+    "invalidInput": "Email/phone value or password is either too short or includes invalid characters. Please re-enter.",
+    "wrongPhoneNo": "Phone number does not have correct length. Please re-enter.",
+    "phoneNoDoesNotExist": "We could not find an account with this phone number. Please try again or open a new account.",
+    "accountDoesNotExist": "We could not find an account with the given credentials.",
+    "FacebookDNE": "Facebook credentials did not match with a Netflix account. "
+                   + "Please try again with your Netflix email and password.",
+    "wrongAuthMethod": "Users account is not matched with a Facebook account. "
+                       + "Please try again with your Netflix email and password.",
+    "success": "Successful login."
+};
+
 driver = webdriver.Chrome()
 firefox_driver = webdriver.Firefox()
 
