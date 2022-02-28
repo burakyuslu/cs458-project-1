@@ -221,10 +221,6 @@ def case_4_1():
     login_button = driver.find_element_by_id("loginbutton")
     login_button.click()
 
-    webdriver.ActionChains(driver).send_keys(Keys.TAB).perform()
-    webdriver.ActionChains(driver).send_keys(Keys.TAB).perform()
-    webdriver.ActionChains(driver).send_keys(Keys.ENTER).perform()
-
     # close the Facebook popup
     driver.close()
 

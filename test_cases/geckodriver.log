@@ -904,3 +904,13 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 1646080331340	Marionette	INFO	Listening on port 49663
 1646080331636	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
 1646080370965	Marionette	INFO	Stopped listening on port 49663
+1646081516802	geckodriver	INFO	Listening on 127.0.0.1:63648
+1646081519852	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\CANKIR~1\\AppData\\Local\\Temp\\rust_mozprofile9mnLUd"
+1646081520217	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\cankirsallioba\\AppData\\Local\\Temp\\rust_mozprofile9mnLUd\\search.json.mozlz4", (void 0)))
+1646081522555	Marionette	INFO	Listening on port 63663
+1646081523057	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1646081554651	Marionette	INFO	Stopped listening on port 63663
+
+###!!! [Child][PContentChild] Error: RunMessage(msgname=PWebSocket::Msg___delete__) Channel closing: too late to send/recv, messages will be lost
+
