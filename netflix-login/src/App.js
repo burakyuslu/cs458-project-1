@@ -45,10 +45,7 @@ function App(){
 
     const handleSubmit = async () => {
         // empty field
-
         if(loginEmail.length === 0 || loginPassword.length === 0) {
-                        console.log("DEBUG 1");
-
             return setErrorMessage(errorTexts["missingField"]);
         }
         // not a valid input
@@ -83,8 +80,6 @@ function App(){
             })
             .catch((error) => {
                 console.log(error.message());
-                            console.log("DEBUG 1");
-
                 setErrorMessage(errorTexts["phoneNoDoesNotExist"]);
             });
         } else {
@@ -105,9 +100,7 @@ function App(){
             setUser(user);
         }).catch( (error) => {
             console.log(error.message);
-            console.log("DEBUG 1");
             setErrorMessage(errorTexts["accountDoesNotExist"] + " Error: " + error.message);
-
         });
     }
 
@@ -126,16 +119,18 @@ function App(){
                 // The following error will be handled in your catch statement
                 setErrorMessage(errorTexts["FacebookDNE"]);
                 return;
+            } else {
+                // Otherwise, handle login normally
+                setUser(user);
+                setErrorMessage(errorTexts["success"]);
+                setLoggedIn(true);
             }
-            // Otherwise, handle login normally
-            setUser(user);
-            setErrorMessage(errorTexts["success"]);
-            setLoggedIn(true);
         }).catch( (err) => {
             if(err.code === 'auth/account-exists-with-different-credential') {
                 setErrorMessage(errorTexts["wrongAuthMethod"]);
+            } else {
+                setErrorMessage(errorTexts["FacebookDNE"]);
             }
-            setErrorMessage(errorTexts["FacebookDNE"]);
         });
     }
 
