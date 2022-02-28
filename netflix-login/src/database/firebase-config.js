@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, FacebookAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { getFirestore, getDocs, collection, query, where } from "firebase/firestore";
 
 const firebaseConfig = {

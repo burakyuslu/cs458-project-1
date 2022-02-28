@@ -4,6 +4,8 @@ import background from "./images/background-img.jpg";
 import React, {useState} from 'react'
 import {auth, getUserMailByPhoneNumber} from "./database/firebase-config";
 import {getAuth, signInWithEmailAndPassword, FacebookAuthProvider, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth";
+import BottomDrawer from "./component/BottomDrawer.js"
+import Header from "./component/Header.js"
 
 function App(){
 
@@ -13,11 +15,8 @@ function App(){
     const [user, setUser] = useState({});
     const [loggedIn, setLoggedIn] = useState(false);
 
-    onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser);
-    })
 
-        const handleSubmit = async () => {
+    const handleSubmit = async () => {
         let emailNotValid = loginEmail.length === 0 || loginEmail.length < 6 || loginEmail.indexOf(' ') >= 0;
         // not a valid input
         if(emailNotValid) {
@@ -36,7 +35,7 @@ function App(){
                     phoneNumber = '+90' + loginEmail;
                 }
             }
-            if( phoneNumber.length != 13){
+            if( phoneNumber.length !== 13){
                 return setErrorMessage( "Telefon numaranız doğru uzunlukta değil. Lütfen telefon numaranızı kontrol edin.")
             }
 
@@ -61,20 +60,19 @@ function App(){
     }
 
     const loginWithEmailPassword = async (loginEmail, loginPassword) => {
-        try {
-            const user = signInWithEmailAndPassword(
-                auth,
-                loginEmail,
-                loginPassword,
-            )
+        signInWithEmailAndPassword(
+            auth,
+            loginEmail,
+            loginPassword,
+        ).then( (user) => {
             console.log(user);
             setErrorMessage("Successful login.");
             setLoggedIn(true);
             setUser(user);
-        } catch (error) {
-            console.log(error.message());
-            setErrorMessage("Kullanıcı bulunamadı. Error: " + error.message());
-        }
+        }).catch( (error) => {
+            console.log(error.message);
+            setErrorMessage("Kullanıcı bulunamadı. Error: " + error.message);
+        });
     }
 
     const loginWithFacebook = async () => {
@@ -107,39 +105,69 @@ function App(){
         });
     }
 
-    const pageTitle = "N E T F L I X";
-    const paperTitle = "Oturum Aç";
+    const screenTexts = [
+        "Sign In",
+        "User Logged in: ",
+        "Sign out",
+        "Email or phone number",
+        "Password",
+        "Remember me",
+        "Need help?",
+        "Login with Facebook",
+        "New to Netflix?",
+        "Sign up now.",
+        "This page is protected by Google reCAPTCHA to ensure you're not a bot."
+    ];
 
      const logout = async () => {
         await signOut(auth);
         setLoggedIn(false);
+        setErrorMessage("");
+        setLoginEmail("");
+        setLoginPassword("");
+        setUser(undefined);
     };
 
-    return (!loggedIn) ? (
+    return (
     <div style={{ backgroundImage: `url(${background})`, height: '100%', margin: 0}}>
         <Grid container spacing={2}>
-            <Grid item xs={4}>
-                <div style={{ paddingLeft: '10%', paddingTop: '3%'}}>
-                    <p style = {{ color: 'red', fontSize:'42px', fontFamily:'-moz-initial', fontWeight:'bold'}}>
-                        {pageTitle}
-                    </p>
-                </div>
-            </Grid>
-            <Grid style={{ paddingTop: '15%', marginBottom: '10%'}}  container xs={3}>
+            <Header/>
+            <Grid style={{ paddingTop: '15%', marginBottom: '13%'}}  container xs={3}>
+            {(loggedIn && !!user) ? (
                 <Paper style={{paddingBottom: '10%', backgroundColor: 'rgba(0, 0, 0, 0.8)', minWidth: '400px'}}
-                        variant="outlined" elevation={3}>
-                    <h2 style={{color: "white", paddingTop: '2%', marginLeft: '13%'}} >{paperTitle}</h2>
-                    {(errorMessage !== "") &&
+                                                       variant="outlined" elevation={3}>
+                    <h1 style={{marginLeft: '13%',  color:'gray', fontSize: '0.9rem'}}>{screenTexts[1]}
+                                            <a style={{color:'white'}}> {user?.user?.email} </a> </h1>
+                    <Paper style={{marginBottom: '3%', backgroundColor: '#E87C03', marginLeft: '13%', maxWidth: '75%'}}
+                          variant="outlined"
+                          id = "error_message">
+                       <p style={{marginLeft: '5%', color:'white', fontSize: '1rem', maxWidth: '90%'}}>
+                           {errorMessage}
+                       </p>
+                    </Paper>}
+                    <Button
+                       style={{marginTop:'10%', marginLeft:'13%', minHeight:'10%', minWidth:'75%', backgroundColor:"#ff0000"}}
+                       variant="contained"
+                       id="logout_button"
+                       onClick={logout}>
+                       {screenTexts[2]}
+                    </Button>
+                </Paper>
+            ) : (
+                <Paper style={{paddingBottom: '10%', backgroundColor: 'rgba(0, 0, 0, 0.8)', minWidth: '400px'}}
+                       variant="outlined" elevation={3}>
+                    <h2 style={{color: "white", paddingTop: '2%', marginLeft: '13%'}} >{screenTexts[0]}</h2>
+                    {(errorMessage !== "") && (
                     <Paper style={{marginBottom: '3%', backgroundColor: '#E87C03', marginLeft: '13%', maxWidth: '75%'}}
                               variant="outlined"
                               id = "error_message">
                         <p style={{marginLeft: '5%', color:'white', fontSize: '1rem', maxWidth: '90%'}}>
                             {errorMessage}
                         </p>
-                    </Paper>}
-                    <TextField style={{ marginLeft: '13%', minWidth:'75%', backgroundColor:'white', borderRadius: 5 }}
+                    </Paper>)}
+                    <TextField style={{ marginLeft: '13%', minWidth:'75%', backgroundColor:'white', borderRadius: 5}}
                         id="email_phone_text_field"
-                        label="E-posta veya telefon numarası"
+                        label={screenTexts[3]}
                         variant="filled"
                         onChange={(event) => setLoginEmail(event.target.value)}
                         onPaste={(e) => {
@@ -153,7 +181,7 @@ function App(){
                     <TextField style={{ marginTop: '3%', marginLeft: '13%', minWidth:'75%',
                         backgroundColor:'white', borderRadius: 5}}
                         id="password_text_field"
-                        label="Parola"
+                        label={screenTexts[4]}
                         variant="filled"
                         type="password"
                         onChange={(event) => setLoginPassword(event.target.value)}
@@ -170,111 +198,32 @@ function App(){
                         variant="contained"
                         id="login_button"
                         onClick={handleSubmit}>
-                        Oturum Aç
+                        {screenTexts[0]}
                     </Button>
                     <FormGroup style={{marginLeft:'13%', maxWidth:'75%', color:'lightgray', flexDirection:'row'}}>
                         <FormControlLabel
                         control={<Checkbox style = {{color: 'white'}} defaultChecked />}
-                        label={<span style={{ fontSize: '0.75rem' }}>{"Beni Hatırla"}</span>}
+                        label={<span style={{ fontSize: '0.75rem' }}>{screenTexts[5]}</span>}
                         />
-                        <a style={{marginTop: '4%', marginLeft: '25%', fontSize: '0.78rem',  color:'lightgray'}}>
-                            Yardım ister misiniz?</a>
+                        <a style={{marginTop: '4%', marginLeft: '35%', fontSize: '0.78rem',  color:'lightgray'}}>
+                            {screenTexts[6]}</a>
                     </FormGroup>
                     <Button style={{marginLeft: '12%'}}
                         onClick={loginWithFacebook}
                             id="login_with_facebook"
-                        variant="text">Facebook İle Oturum Aç</Button>
-                    <p style={{marginLeft: '13%',  color:'gray', fontSize: '0.9rem'}}>Netflix'e katılmak ister misiniz?
-                        <a style={{color:'white'}}> Şimdi kaydolun. </a> </p>
+                        variant="text">{screenTexts[7]}</Button>
+                    <p style={{marginLeft: '13%',  color:'gray', fontSize: '0.9rem'}}>{screenTexts[8]}
+                        <a style={{color:'white'}}> {screenTexts[9]} </a> </p>
                     <p style={{marginLeft: '13%', maxWidth:'75%', color:'gray', fontSize: '0.9rem'}}>
-                        Bu sayfa robot olmadığınızı kanıtlamak için Google reCAPTCHA tarafından korunuyor.
+                        {screenTexts[10]}
                     </p>
                 </Paper>
+            )}
             </Grid>
-            <Grid  style = {{ paddingTop: '3%',  paddingBottom: '3%', backgroundColor: 'rgba(0, 0, 0, 0.8)', color:'white'}} container xs={12} >
-                <Grid  item xs={2}/>
-                <Grid container xs={9}>
-                    <Grid item xs={12}>
-                        Sorularınız mı var? 0850-390-7444 numaralı telefonu arayın
-                    </Grid>
-                    <Grid item xs={3}>
-                        <br/> SSS <br/>
-                        Çerez Tercihleri <br/>
-                        Türkçe (tuş olarak değiştir)
-                    </Grid>
-                    <Grid item xs={3}>
-                        <br/> Yardım Merkezi <br/>
-                        Kurumsal Bilgiler
-                    </Grid>
-                    <Grid item xs={3}>
-                        <br/> Kullanım Koşulları
-                    </Grid>
-                    <Grid item xs={3}>
-                        <br/> Gizlilik
-                    </Grid>
-                </Grid>
-            </Grid>
+            <BottomDrawer/>
         </Grid>
     </div>
-    ) :
-       <div style={{ backgroundImage: `url(${background})`, height: '100%', margin: 0}}>
-           <Grid container spacing={2}>
-               <Grid item xs={4}>
-                   <div style={{ paddingLeft: '10%', paddingTop: '3%'}}>
-                       <p style = {{ color: 'red', fontSize:'42px', fontFamily:'-moz-initial', fontWeight:'bold'}}>
-                           {pageTitle}
-                       </p>
-                   </div>
-               </Grid>
-               <Grid style={{ paddingTop: '15%', marginBottom: '10%'}}  container xs={3}>
-                   <Paper style={{paddingBottom: '10%', backgroundColor: 'rgba(0, 0, 0, 0.8)', minWidth: '400px'}}
-                          variant="outlined" elevation={3}>
-                       <h1 style={{marginLeft: '13%',  color:'gray', fontSize: '0.9rem'}}>User Logged in:
-                        <a style={{color:'white'}}> {user?.email} </a> </h1>
-                       <h2 style={{color: "white", paddingTop: '2%', marginLeft: '13%'}} >Başarılı bir şekilde oturum açıldı!</h2>
-                       {(errorMessage !== "") &&
-                       <Paper style={{marginBottom: '3%', backgroundColor: '#E87C03', marginLeft: '13%', maxWidth: '75%'}}
-                              variant="outlined"
-                              id = "error_message">
-                           <p style={{marginLeft: '5%', color:'white', fontSize: '1rem', maxWidth: '90%'}}>
-                               {errorMessage}
-                           </p>
-
-                       </Paper>}
-                       <Button
-                          style={{marginTop:'10%', marginLeft:'13%', minHeight:'10%', minWidth:'75%', backgroundColor:"#ff0000"}}
-                          variant="contained"
-                          id="logout_button"
-                          onClick={logout}>
-                           Oturumu Kapat
-                       </Button>
-                   </Paper>
-               </Grid>
-               <Grid  style = {{ paddingTop: '3%',  paddingBottom: '3%', backgroundColor: 'rgba(0, 0, 0, 0.8)', color:'white'}} container xs={12} >
-                   <Grid  item xs={2}/>
-                   <Grid container xs={9}>
-                       <Grid item xs={12}>
-                           Sorularınız mı var? 0850-390-7444 numaralı telefonu arayın
-                       </Grid>
-                       <Grid item xs={3}>
-                           <br/> SSS <br/>
-                           Çerez Tercihleri <br/>
-                           Türkçe (tuş olarak değiştir)
-                       </Grid>
-                       <Grid item xs={3}>
-                           <br/> Yardım Merkezi <br/>
-                           Kurumsal Bilgiler
-                       </Grid>
-                       <Grid item xs={3}>
-                           <br/> Kullanım Koşulları
-                       </Grid>
-                       <Grid item xs={3}>
-                           <br/> Gizlilik
-                       </Grid>
-                   </Grid>
-               </Grid>
-           </Grid>
-       </div>
+    );
 }
 
 export default App;
