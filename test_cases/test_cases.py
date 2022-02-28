@@ -198,7 +198,7 @@ def case3_2():
 
 def case_4_1():
     """
-    Checking for successful login with facebook
+    Checking for unsuccessful login with facebook
     :return: None
     """
 
