@@ -54,6 +54,8 @@ def case_1_1():
     assert incoming_message.startswith("Missing")
     print("Test 1.1 successful")
 
+    driver.refresh()
+
 
 def case_1_2():
     """
@@ -75,6 +77,8 @@ def case_1_2():
 
     assert incoming_message.startswith("Missing")
     print("Test 1.2 successful")
+
+    driver.refresh()
 
 
 def case_1_3():
@@ -98,6 +102,8 @@ def case_1_3():
     assert incoming_message.startswith("Missing")
     print("Test 1.3 successful")
 
+    driver.refresh()
+
 
 def case_1_4():
     """
@@ -118,6 +124,8 @@ def case_1_4():
 
     assert incoming_message.startswith('Successful')
     print("Test 1.4 successful")
+
+    driver.refresh()
 
 def case2():
     """
@@ -140,6 +148,7 @@ def case2():
     assert incoming_message.startswith("Successful")
     print("Test 2 successful")
 
+    firefox_driver.refresh()
 
 def case3_1():
     """
@@ -160,6 +169,8 @@ def case3_1():
 
     assert incoming_message.startswith("Successful")
     print("Test 3.1 -- Phone number without +90 -- successful.")
+
+    driver.refresh()
 
 
 def case3_2():
@@ -182,52 +193,10 @@ def case3_2():
     assert incoming_message.startswith("Successful")
     print("Test 3.2 -- Phone number starting with +90 -- successful.")
 
+    driver.refresh()
+
+
 def case_4_1():
-    """
-    Checking for successful login with facebook
-    :return: None
-    """
-
-    login_with_facebook_button = driver.find_element_by_id("login_with_facebook")
-    login_with_facebook_button.click()
-    time.sleep(1)
-
-    # switch to facebook tab
-    driver.switch_to_window(driver.window_handles[1])
-    time.sleep(3)
-
-    facebook_email_phone_text_field = driver.find_element_by_id("email")
-    facebook_email_phone_text_field.send_keys("elif.kurtay00@gmail.com")
-    time.sleep(1)
-
-    facebook_password_text_field = driver.find_element_by_id("pass")
-    facebook_password_text_field.send_keys("wzJDngPYEk8TXEfqkDky")
-    time.sleep(1)
-
-    login_button = driver.find_element_by_id("loginbutton")
-    login_button.click()
-
-    webdriver.ActionChains(driver).send_keys(Keys.TAB).perform()
-    webdriver.ActionChains(driver).send_keys(Keys.TAB).perform()
-    webdriver.ActionChains(driver).send_keys(Keys.ENTER).perform()
-
-    # switch back to chrome[0]
-    driver.switch_to_window(driver.window_handles[0])
-
-    # check the database for the email of the fb user's email
-    # if it exists, login
-    # if not,
-    success_message = "Successful Login."
-
-    w_wait.until(ec.presence_of_element_located((By.ID, "error_message")))
-    incoming_message = driver.find_element_by_id("error_message").text
-
-    if incoming_message.startswith("Successful") == success_message.startswith("Successful"):
-        assert success_message.startswith("Successful") == incoming_message.startswith("Successful")
-        print("Test 4.1 successful")
-
-
-def case_4_2():
     """
     Checking for successful login with facebook
     :return: None
@@ -271,7 +240,56 @@ def case_4_2():
     incoming_message = driver.find_element_by_id("error_message").text
 
     assert success_message.startswith("Facebook") == incoming_message.startswith("Facebook")
-    print("Test 4.2 successful")
+    print("Test 4.1 successful")
+
+    driver.refresh()
+
+
+def case_4_2():
+    """
+    Checking for successful login with facebook
+    :return: None
+    """
+
+    login_with_facebook_button = driver.find_element_by_id("login_with_facebook")
+    login_with_facebook_button.click()
+    time.sleep(1)
+
+    # switch to facebook tab
+    driver.switch_to_window(driver.window_handles[1])
+    time.sleep(3)
+
+    facebook_email_phone_text_field = driver.find_element_by_id("email")
+    facebook_email_phone_text_field.send_keys("elif.kurtay00@gmail.com")
+    time.sleep(1)
+
+    facebook_password_text_field = driver.find_element_by_id("pass")
+    facebook_password_text_field.send_keys("wzJDngPYEk8TXEfqkDky")
+    time.sleep(1)
+
+    login_button = driver.find_element_by_id("loginbutton")
+    login_button.click()
+
+    webdriver.ActionChains(driver).send_keys(Keys.TAB).perform()
+    webdriver.ActionChains(driver).send_keys(Keys.TAB).perform()
+    webdriver.ActionChains(driver).send_keys(Keys.ENTER).perform()
+
+    # switch back to chrome[0]
+    driver.switch_to_window(driver.window_handles[0])
+
+    # check the database for the email of the fb user's email
+    # if it exists, login
+    # if not,
+    success_message = "Successful Login."
+
+    w_wait.until(ec.presence_of_element_located((By.ID, "error_message")))
+    incoming_message = driver.find_element_by_id("error_message").text
+
+    if incoming_message.startswith("Successful") == success_message.startswith("Successful"):
+        assert success_message.startswith("Successful") == incoming_message.startswith("Successful")
+        print("Test 4.2 successful")
+
+    driver.refresh()
 
 
 def case_5():
@@ -299,6 +317,8 @@ def case_5():
     assert email_phone_text_field.text == ''
     print("Test 5 successful")
 
+    driver.refresh()
+
 
 def initiate_test_cases():
     """
@@ -308,15 +328,15 @@ def initiate_test_cases():
     """
     print("Started test cases ---------------------------------------")
     case_1_1()
-    #case_1_2()
-    #case_1_3()
-    #case_1_4()
-    #case2()
-    #case3_1()
-    #case3_2()
-    #case_4_1()
-    #case_4_2()
-    #case_5()
+    case_1_2()
+    case_1_3()
+    case_1_4()
+    case2()
+    case3_1()
+    case3_2()
+    case_4_1()
+    case_4_2()
+    case_5()
     print("Test cases finished successfully -------------------------")
 
 
