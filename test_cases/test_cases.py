@@ -218,17 +218,10 @@ def case_4():
     # check the database for the email of the fb user's email
     # if it exists, login
     # if not,
-
-    fail_message = "Girilen Facebook kullanıcı kayıtlarda bulunamadı. Netflix email ve şifrenizle girmeyi tekrar deneyin."
     success_message = "Successful Login."
-
 
     w_wait.until(ec.presence_of_element_located((By.ID, "error_message")))
     incoming_message = driver.find_element_by_id("error_message").text
-
-    if incoming_message.startswith("Girilen") == fail_message.startswith("Girilen"):
-        assert fail_message.startswith("Girilen") == incoming_message.startswith("Girilen")
-        print("Test 4 successful")
 
     if incoming_message.startswith("Successful") == success_message.startswith("Successful"):
         assert success_message.startswith("Successful") == incoming_message.startswith("Successful")
@@ -272,6 +265,7 @@ def initiate_test_cases():
     case_1_1()
     #case_1_2()
     #case_1_3()
+    #case_1_4()
     #case2()
     #case3_1()
     #case3_2()
