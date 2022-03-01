@@ -6,6 +6,8 @@ npm install
 npm start
 
 Then, they should change directory to test_cases and then run the following command:
+pip install selenium
+  OR
 python -m pip install selenium
 
 After this, one can run the automated test cases using this command:
