@@ -2,16 +2,16 @@ Source codes for the implementation are found in the netflix-login directory.
 Source codes for the test cases are found in the test_cases directory.
 
 To run the project, one needs to go the netflix-login directory and then enter the following commands in this order:
-npm install
-npm start
+```npm install```
+```npm start```
 
 Then, they should change directory to test_cases and then run the following command:
-pip install selenium
+```pip install selenium```
   OR
-python -m pip install selenium
+```python -m pip install selenium```
 
 After this, one can run the automated test cases using this command:
-python test_cases.py
+```python test_cases.py```
 
 To run these commands, you need to have npm and pip installed.
 
