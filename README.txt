@@ -12,9 +12,10 @@ After this, one can run the automated test cases using this command:
 python test_cases.py
 
 To run these commands, you need to have npm and pip installed.
+
 Please remember that you need to have web driver for your browser added to path or in the test_cases directory in order to run the test cases.
-By default, we use the ChromeDriver. If you use any other driver, you need to modify the source code.
-You can choose which test cases to run/not run by commenting/uncommenting the relevant lines at test_cases.py.
+By default, we use the ChromeDriver and for test case 2 we used the gecko driver (webdriver for Firefox). If you use any other driver, you need to modify the source code.
+You can run the test cases by running the python file (specifically the 'initiate_test_cases() function), all the test cases will work sequentially.
 
 Team Members:
 Can Kırşallıoba - 21801768
