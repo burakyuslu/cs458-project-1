@@ -11,6 +11,7 @@ python -m pip install selenium
 After this, one can run the automated test cases using this command:
 python test_cases.py
 
+To run these commands, you need to have npm and pip installed.
 Please remember that you need to have web driver for your browser added to path or in the test_cases directory in order to run the test cases.
 By default, we use the ChromeDriver. If you use any other driver, you need to modify the source code.
 You can choose which test cases to run/not run by commenting/uncommenting the relevant lines at test_cases.py.
